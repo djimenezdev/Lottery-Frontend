@@ -3,7 +3,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import abi from "../constants/abi.json"
 import contractAddresses from "../constants/contractAddresses.json"
 import { BigNumber, ethers, Signer } from "ethers"
-import { useNotification } from "web3uikit"
+import { useNotification } from "@web3uikit/core"
 
 const LotteryEntrance = () => {
     const { chainId: mainId, Moralis, isWeb3Enabled } = useMoralis()
@@ -88,7 +88,7 @@ const LotteryEntrance = () => {
     const handleSuccess = async (tx) => {
         const txReceipt = await tx.wait(1)
         if (txReceipt.events[0].args.sender) {
-            handleNewNotification(tx)
+            handleNewNotification()
             getFee()
         }
     }
@@ -111,7 +111,6 @@ const LotteryEntrance = () => {
                             message: "We have a winner",
                             title: "Winner",
                             position: "topR",
-                            icon: "bell",
                             id: "Winner",
                         })
                         getFee()
@@ -123,13 +122,12 @@ const LotteryEntrance = () => {
         }
     }, [raffleAddress])
 
-    const handleNewNotification = (tx) => {
+    const handleNewNotification = () => {
         dispatch({
             type: "info",
             message: "Transaction Successfully Sent",
             title: "Tx Notification",
             position: "topR",
-            icon: "bell",
         })
     }
 
@@ -139,7 +137,6 @@ const LotteryEntrance = () => {
             message: "Cannot Enter raffle is close",
             title: "Raffle Error",
             position: "topR",
-            icon: "exclamation",
         })
     }
 
